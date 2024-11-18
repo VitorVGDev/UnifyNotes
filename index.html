@@ -44,12 +44,16 @@
             const meses = document.getElementById('meses').value;
 
             if (colaborador && meses) {
-                const linhas = meses.split('\n').map(linha => [colaborador, ...linha.split(' - ')]);
-                
+                // Ajustando a forma de separar os dados
+                const linhas = meses.split('\n').map(linha => {
+                    const partes = linha.split(' - ');
+                    return [colaborador, partes[0], partes[1], partes[2]]; // Colaborador, data inicial, data final, notas
+                });
+
                 try {
                     const response = await gapi.client.sheets.spreadsheets.values.append({
                         spreadsheetId: SPREADSHEET_ID,
-                        range: 'Sheet1!A1:D1',
+                        range: 'Sheet1', // Modificado para permitir que o Google Sheets adicione em qualquer linha
                         valueInputOption: 'USER_ENTERED',
                         resource: {
                             values: linhas,
