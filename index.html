@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Notas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Monitoramento de Notas Retroativas</h1>
+        <label for="colaborador">Nome do Colaborador:</label>
+        <input type="text" id="colaborador" placeholder="Digite o nome do colaborador">
+        <label for="meses">Notas Retroativas (por mês):</label>
+        <textarea id="meses" placeholder="Exemplo:&#10;01/09/2024 - 30/09/2024 - 18 notas&#10;01/10/2024 - 31/10/2024 - 17 notas&#10;01/11/2024 - 12/11/2024 - 33 notas"></textarea>
+        <button id="gravar">Gravar Dados</button>
+    </div>
+
+    <script>
+        const CLIENT_ID = 'SEU_CLIENT_ID_AQUI';
+        const API_KEY = 'SUA_API_KEY_AQUI';
+        const SPREADSHEET_ID = '1VX9eIZlr5xGS1gYg6j3kmjO30Ka8xRBdtczfq1ebnyI';
+
+        const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+        const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
+
+        function gapiLoaded() {
+            gapi.load('client:auth2', initializeGapiClient);
+        }
+
+        async function initializeGapiClient() {
+            await gapi.client.init({
+                apiKey: API_KEY,
+                clientId: CLIENT_ID,
+                discoveryDocs: [DISCOVERY_DOC],
+                scope: SCOPES,
+            });
+
+            gapi.auth2.getAuthInstance().signIn();
+        }
+
+        document.getElementById('gravar').addEventListener('click', async () => {
+            const colaborador = document.getElementById('colaborador').value;
+            const meses = document.getElementById('meses').value;
+
+            if (colaborador && meses) {
+                const linhas = meses.split('\n').map(linha => [colaborador, ...linha.split(' - ')]);
+                
+                try {
+                    const response = await gapi.client.sheets.spreadsheets.values.append({
+                        spreadsheetId: SPREADSHEET_ID,
+                        range: 'Sheet1!A1:D1',
+                        valueInputOption: 'USER_ENTERED',
+                        resource: {
+                            values: linhas,
+                        },
+                    });
+                    alert('Dados enviados com sucesso!');
+                } catch (error) {
+                    console.error('Erro ao enviar dados:', error);
+                    alert('Erro ao enviar dados.');
+                }
+            } else {
+                alert('Por favor, preencha todos os campos.');
+            }
+        });
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+</body>
+</html>
