@@ -36,7 +36,11 @@
                 scope: SCOPES,
             });
 
-            gapi.auth2.getAuthInstance().signIn();
+            // Verifique se o usuário já está logado e autorize-o se necessário
+            const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+            if (!isSignedIn) {
+                await gapi.auth2.getAuthInstance().signIn();
+            }
         }
 
         document.getElementById('gravar').addEventListener('click', async () => {
@@ -44,7 +48,6 @@
             const meses = document.getElementById('meses').value;
 
             if (colaborador && meses) {
-                // Ajustando a forma de separar os dados
                 const linhas = meses.split('\n').map(linha => {
                     const partes = linha.split(' - ');
                     return [colaborador, partes[0], partes[1], partes[2]]; // Colaborador, data inicial, data final, notas
@@ -53,7 +56,7 @@
                 try {
                     const response = await gapi.client.sheets.spreadsheets.values.append({
                         spreadsheetId: SPREADSHEET_ID,
-                        range: 'Sheet1', // Modificado para permitir que o Google Sheets adicione em qualquer linha
+                        range: 'Sheet1!A1', // Garantindo que os dados sejam inseridos a partir da primeira célula da próxima linha
                         valueInputOption: 'USER_ENTERED',
                         resource: {
                             values: linhas,
@@ -62,7 +65,7 @@
                     alert('Dados enviados com sucesso!');
                 } catch (error) {
                     console.error('Erro ao enviar dados:', error);
-                    alert('Erro ao enviar dados.');
+                    alert('Erro ao enviar dados. Verifique as permissões ou o formato dos dados.');
                 }
             } else {
                 alert('Por favor, preencha todos os campos.');
