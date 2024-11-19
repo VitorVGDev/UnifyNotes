@@ -2,14 +2,30 @@
 
 body {
     font-family: Arial, sans-serif;
-    background-color: antiquewhite;
+    background-color: #1e1e1e;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    color: #e01212; /* Vermelho */
+    color: #d90202; /* Vermelho */
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(Screenshot_4.png);
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px); /* Adiciona o efeito de desfoque */
+    z-index: -1;
 }
 
 .container {
@@ -21,17 +37,19 @@ body {
     max-width: 500px;
     margin: 20px;
     border: 1px solid #e01212; /* Vermelho */
+    position: relative;
+    z-index: 1;
 }
 
 h1 {
     text-align: center;
-    color: #e01212; /* Vermelho */
+    color: #d90202; /* Vermelho */
 }
 
 label {
     display: block;
     margin-bottom: 8px;
-    color: #e01212; /* Vermelho */
+    color: #d90202; /* Vermelho */
 }
 
 input[type="text"],
@@ -39,7 +57,7 @@ textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-    border: 1px solid #e01212; /* Vermelho */
+    border: 1px solid #d90202; /* Vermelho */
     border-radius: 4px;
     box-sizing: border-box;
     background-color: #2e2e2e; /* Preto mais claro */
@@ -53,7 +71,7 @@ textarea {
 button {
     width: 100%;
     padding: 10px;
-    background-color: #e01212; /* Vermelho */
+    background-color: #d90202; /* Vermelho */
     border: none;
     border-radius: 4px;
     color: white;
@@ -63,8 +81,8 @@ button {
 }
 
 button:hover {
-    background-color: #e012127a;
-    color: #dadada; /* Vermelho mais escuro */
+    background-color: #a50303;
+    color: #ffffff; /* Vermelho mais escuro */
 }
 
 button:disabled {
