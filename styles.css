@@ -43,7 +43,7 @@ textarea {
     border-radius: 4px;
     box-sizing: border-box;
     background-color: #2e2e2e; /* Preto mais claro */
-    color: #e01212; /* Vermelho */
+    color: #ffffff; /* Vermelho */
 }
 
 textarea {
@@ -63,7 +63,8 @@ button {
 }
 
 button:hover {
-    background-color: #b00e0e; /* Vermelho mais escuro */
+    background-color: #e012127a;
+    color: #dadada; /* Vermelho mais escuro */
 }
 
 button:disabled {
