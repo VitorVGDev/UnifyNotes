@@ -12,11 +12,61 @@
             <h1>Monitoramento de Notas Pendentes</h1>
             <label for="colaborador">Seu código:</label>
             <input type="text" id="colaborador" placeholder="Exemplo: A99;" name="Código:">
-            <label for="meses">Notas Retroativas (por mês):</label>
-            <textarea id="meses" placeholder="Exemplo:&#10;01/09/2024 - 30/09/2024 - 18 notas&#10;01/10/2024 - 31/10/2024 - 17 notas&#10;01/11/2024 - 12/11/2024 - 33 notas" name="Notas Pendentes:"></textarea>
+
+            <!-- Os inputs serão preenchidos dinamicamente pelo JavaScript -->
+            <div id="inputs-container"></div>
+
             <button id="gravar" type="submit">Enviar Dados</button>
         </div>
     </form>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+
+    <script>
+        // Função para calcular os períodos
+        function generateDateRanges() {
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+
+            const ranges = [];
+            for (let i = 2; i > 0; i--) {
+                const date = new Date(currentYear, currentMonth - i, 1); // Primeiro dia do mês
+                const end = new Date(date.getFullYear(), date.getMonth() + 1, 0); // Último dia do mês
+                ranges.push({
+                    label: `Pendências (${date.toLocaleDateString('pt-BR')} - ${end.toLocaleDateString('pt-BR')}):`,
+                    name: `${date.toLocaleDateString('pt-BR')} - ${end.toLocaleDateString('pt-BR')}`
+                });
+            }
+
+            // Adicionar o período do mês atual até hoje
+            const currentMonthStart = new Date(currentYear, currentMonth, 1);
+            ranges.push({
+                label: `Pendências (${currentMonthStart.toLocaleDateString('pt-BR')} - ${today.toLocaleDateString('pt-BR')}):`,
+                name: "Mês atual"
+            });
+
+            return ranges;
+        }
+
+        // Gerar os inputs dinamicamente
+        function createInputs() {
+            const container = document.getElementById('inputs-container');
+            const ranges = generateDateRanges();
+
+            ranges.forEach(range => {
+                const label = document.createElement('label');
+                label.textContent = range.label;
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.name = range.name;
+
+                container.appendChild(label);
+                container.appendChild(input);
+            });
+        }
+
+        // Inicializar os inputs ao carregar a página
+        createInputs();
+    </script>
 </body>
 </html>
