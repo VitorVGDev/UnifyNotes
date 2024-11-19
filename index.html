@@ -7,71 +7,16 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Monitoramento de Notas Retroativas</h1>
-        <label for="colaborador">Nome do Colaborador:</label>
-        <input type="text" id="colaborador" placeholder="Digite o nome do colaborador">
-        <label for="meses">Notas Retroativas (por mês):</label>
-        <textarea id="meses" placeholder="Exemplo:&#10;01/09/2024 - 30/09/2024 - 18 notas&#10;01/10/2024 - 31/10/2024 - 17 notas&#10;01/11/2024 - 12/11/2024 - 33 notas"></textarea>
-        <button id="gravar">Gravar Dados</button>
-    </div>
-
-    <script>
-        const CLIENT_ID = '187920609144-raasfqg8t17sqis71lvaih9s0tmqv21s.apps.googleusercontent.com';
-        const API_KEY = 'AIzaSyBalOAnrdXp5ZNPTX_D06CvoPrDg9On5RY';
-        const SPREADSHEET_ID = '1VX9eIZlr5xGS1gYg6j3kmjO30Ka8xRBdtczfq1ebnyI';
-
-        const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
-        const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
-
-        function gapiLoaded() {
-            gapi.load('client:auth2', initializeGapiClient);
-        }
-
-        async function initializeGapiClient() {
-            await gapi.client.init({
-                apiKey: API_KEY,
-                clientId: CLIENT_ID,
-                discoveryDocs: [DISCOVERY_DOC],
-                scope: SCOPES,
-            });
-
-            // Verifique se o usuário já está logado e autorize-o se necessário
-            const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-            if (!isSignedIn) {
-                await gapi.auth2.getAuthInstance().signIn();
-            }
-        }
-
-        document.getElementById('gravar').addEventListener('click', async () => {
-            const colaborador = document.getElementById('colaborador').value;
-            const meses = document.getElementById('meses').value;
-
-            if (colaborador && meses) {
-                const linhas = meses.split('\n').map(linha => {
-                    const partes = linha.split(' - ');
-                    return [colaborador, partes[0], partes[1], partes[2]]; // Colaborador, data inicial, data final, notas
-                });
-
-                try {
-                    const response = await gapi.client.sheets.spreadsheets.values.append({
-                        spreadsheetId: SPREADSHEET_ID,
-                        range: 'Sheet1!A1', // Garantindo que os dados sejam inseridos a partir da primeira célula da próxima linha
-                        valueInputOption: 'USER_ENTERED',
-                        resource: {
-                            values: linhas,
-                        },
-                    });
-                    alert('Dados enviados com sucesso!');
-                } catch (error) {
-                    console.error('Erro ao enviar dados:', error);
-                    alert('Erro ao enviar dados. Verifique as permissões ou o formato dos dados.');
-                }
-            } else {
-                alert('Por favor, preencha todos os campos.');
-            }
-        });
-    </script>
+    <form action="https://api.sheetmonkey.io/form/nqkfr7CzTVGYpn9GjJ1DgH" method="post">
+        <div class="container">
+            <h1>Monitoramento de Notas Retroativas</h1>
+            <label for="colaborador">Seu código:</label>
+            <input type="text" id="colaborador" placeholder="Exemplo: A99;" name="Código:">
+            <label for="meses">Notas Retroativas (por mês):</label>
+            <textarea id="meses" placeholder="Exemplo:&#10;01/09/2024 - 30/09/2024 - 18 notas&#10;01/10/2024 - 31/10/2024 - 17 notas&#10;01/11/2024 - 12/11/2024 - 33 notas" name="Notas Pendentes:"></textarea>
+            <button id="gravar" type="submit">Gravar Dados</button>
+        </div>
+    </form>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
 </body>
 </html>
