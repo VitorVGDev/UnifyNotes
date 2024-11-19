@@ -49,11 +49,10 @@ h1 {
 label {
     display: block;
     margin-bottom: 8px;
-    color: #d90202; /* Vermelho */
+    color: #a1a1a1; /* Vermelho */
 }
 
-input,
-textarea {
+input{
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
