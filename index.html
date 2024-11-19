@@ -7,11 +7,11 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form action="https://api.sheetmonkey.io/form/nqkfr7CzTVGYpn9GjJ1DgH" method="post">
+    <form id="nota-form" action="https://api.sheetmonkey.io/form/nqkfr7CzTVGYpn9GjJ1DgH" method="post">
         <div class="container">
             <h1>Monitoramento de Notas Pendentes</h1>
             <label for="colaborador">Seu código:</label>
-            <input type="text" id="colaborador" placeholder="Exemplo: A99;" name="Código:">
+            <input type="text" id="colaborador" placeholder="Exemplo: A99;" name="Código:" required>
 
             <!-- Os inputs serão preenchidos dinamicamente pelo JavaScript -->
             <div id="inputs-container"></div>
@@ -66,6 +66,7 @@
                 input.name = range.name;
                 input.placeholder = "Nº de notas";
                 input.classList.add('nota-input'); // Classe para identificar os inputs de notas
+                input.required = true; // Definir como obrigatório
 
                 container.appendChild(label);
                 container.appendChild(input);
@@ -86,13 +87,22 @@
             document.getElementById('saldo').value = total;
         }
 
+        // Validar o formulário antes de enviar
+        function validateForm(event) {
+            const form = document.getElementById('nota-form');
+            if (!form.reportValidity()) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                event.preventDefault(); // Impedir o envio do formulário
+            } else {
+                calculateSaldo(); // Calcular o saldo antes de enviar
+            }
+        }
+
         // Inicializar os inputs ao carregar a página
         createInputs();
 
-        // Atualizar o saldo sempre que o formulário for enviado
-        document.querySelector('form').addEventListener('submit', () => {
-            calculateSaldo();
-        });
+        // Adicionar evento de validação no formulário
+        document.querySelector('form').addEventListener('submit', validateForm);
     </script>
 </body>
 </html>
