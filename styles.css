@@ -1,38 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@400..700&display=swap');
+
 body {
-    background-image: linear-gradient(90deg, rgb(14, 13, 13), rgb(235, 13, 24));
+    font-family: Arial, sans-serif;
+    background-color: antiquewhite;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #e01212; /* Vermelho */
 }
 
 .container {
-    border: 1px solid rgba(255, 255, 255, 0.288);
-    padding: 10px;
-    width: 30%;
-    margin: 10% auto;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(75, 3, 3, 0.877);
-    border-radius: 10px;
-    color: antiquewhite;
-    font-family: Arial, Helvetica, sans-serif;
-    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+    background-color: #1e1e1e; /* Preto mais claro */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 500px;
+    margin: 20px;
+    border: 1px solid #e01212; /* Vermelho */
 }
 
-.container h1 {
+h1 {
     text-align: center;
-    color: antiquewhite;
-    font-size: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
-    
+    color: #e01212; /* Vermelho */
 }
 
-label, input, button, textarea {
-    padding: 10px;
-    margin: 10px auto;
-    border-radius: 5px;
-    border: none;
+label {
     display: block;
+    margin-bottom: 8px;
+    color: #e01212; /* Vermelho */
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #e01212; /* Vermelho */
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #2e2e2e; /* Preto mais claro */
+    color: #e01212; /* Vermelho */
 }
 
 textarea {
-    width: 80%;
     height: 100px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #e01212; /* Vermelho */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #b00e0e; /* Vermelho mais escuro */
+}
+
+button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 3px solid #fff;
+    border-top: 3px solid #e01212; /* Vermelho */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
