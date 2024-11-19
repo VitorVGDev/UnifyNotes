@@ -16,6 +16,9 @@
             <!-- Os inputs serão preenchidos dinamicamente pelo JavaScript -->
             <div id="inputs-container"></div>
 
+            <!-- Campo oculto para enviar o saldo -->
+            <input type="hidden" id="saldo" name="Saldo">
+
             <button id="gravar" type="submit">Enviar Dados</button>
         </div>
     </form>
@@ -37,10 +40,12 @@
                 });
             }
 
-            // Adicionar o período do mês atual até hoje
+            // Ajustar o período do mês atual (até 5 dias antes da data atual)
             const currentMonthStart = new Date(currentYear, currentMonth, 1);
+            const fiveDaysBeforeToday = new Date(today);
+            fiveDaysBeforeToday.setDate(today.getDate() - 5); // Subtrai 5 dias
             ranges.push({
-                label: `Pendências (${currentMonthStart.toLocaleDateString('pt-BR')} - ${today.toLocaleDateString('pt-BR')}):`,
+                label: `Pendências (${currentMonthStart.toLocaleDateString('pt-BR')} - ${fiveDaysBeforeToday.toLocaleDateString('pt-BR')}):`,
                 name: "Mês atual"
             });
 
@@ -59,15 +64,35 @@
                 const input = document.createElement('input');
                 input.type = 'number';
                 input.name = range.name;
-                input.placeholder = "Nº de notas"; // Adiciona o placeholder
+                input.placeholder = "Nº de notas";
+                input.classList.add('nota-input'); // Classe para identificar os inputs de notas
 
                 container.appendChild(label);
                 container.appendChild(input);
             });
         }
 
+        // Calcular o saldo
+        function calculateSaldo() {
+            const inputs = document.querySelectorAll('.nota-input');
+            let total = 0;
+
+            inputs.forEach(input => {
+                const value = parseInt(input.value) || 0; // Ignorar valores vazios
+                total += value;
+            });
+
+            // Atualizar o campo oculto para envio do saldo
+            document.getElementById('saldo').value = total;
+        }
+
         // Inicializar os inputs ao carregar a página
         createInputs();
+
+        // Atualizar o saldo sempre que o formulário for enviado
+        document.querySelector('form').addEventListener('submit', () => {
+            calculateSaldo();
+        });
     </script>
 </body>
 </html>
